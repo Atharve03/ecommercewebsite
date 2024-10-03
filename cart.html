@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce App - Cart</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+          
+        }
+        
+        #cart {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 32px;
+            text-align: center;
+            color: #333;
+            margin: 0 0 20px;
+            padding: 10px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s;
+        }
+
+        .cart-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .item-details img {
+            width: 100px;
+            height: auto;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 30%;
+        }
+        .item-quantity input{
+            width: 15%;
+            
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 15px;
+            background-color: #088178;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1a4e4b;
+        }
+
+        .item-remove {
+            font-size: 24px;
+            color: red;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .item-remove:hover {
+            color: #e84343;
+        }
+        
+        .cart-summary {
+            text-align: right;
+            padding: 20px 0;
+        }
+
+        .cart-summary h3 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .item-details {
+                margin-bottom: 10px;
+            }
+
+            .item-quantity {
+                margin-top: 10px;
+            }
+            .item-remove{
+                margin-top: 20px;
+            }
+
+            .cart-summary {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section id="header">
+        <a href="index.html">
+            <img src="img/logo.png" class="logo" alt="">
+        </a>
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="cart.html" id="bag"><i class="fa-solid fa-bag-shopping"></i></a></li>
+                <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a>
+            <i id="bar" class="fa-solid fa-bars"></i>
+            <script src="script.js"></script>
+        </div>
+    </section>
+
+    <section id="pageheader" class="blogheader">
+        <h2>#readmore</h2>
+        <p>All Case Study of the product</p>
+    </section>
+
+    <section id="cart">
+        <h2>Your Shopping Cart</h2>
+        
+        <!-- Cart Item 1 -->
+        <div class="cart-item" data-price="50.00">
+            <div class="item-details">
+                <img src="img/products/f3.jpg" alt="Product Image">
+                <div>
+                    <h3>Product Name</h3>
+                    <p>Description of the product</p>
+                    <p class="price">$50.00</p>
+                </div>
+            </div>
+            <div class="item-quantity">
+                <button class="decrease">-</button>
+                <input type="number" class="quantity" value="1" min="1">
+                <button class="increase">+</button>
+            </div>
+            <div class="item-remove">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+        </div>
+
+        <!-- Cart Item 2 -->
+        <div class="cart-item" data-price="75.00">
+            <div class="item-details">
+                <img src="img/products/f1.jpg" alt="Product Image">
+                <div>
+                    <h3>Another Product</h3>
+                    <p>Description of another product</p>
+                    <p class="price">$75.00</p>
+                </div>
+            </div>
+            <div class="item-quantity">
+                <button class="decrease">-</button>
+                <input type="number" class="quantity" value="1" min="1">
+                <button class="increase">+</button>
+            </div>
+            <div class="item-remove">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+            <h3>Total: $<span id="total">125.00</span></h3>
+            <button id="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('.increase').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const cartItem = event.target.closest('.cart-item');
+                const quantityInput = cartItem.querySelector('.quantity');
+                quantityInput.value = parseInt(quantityInput.value) + 1;
+                updateTotal();
+            });
+        });
+
+        document.querySelectorAll('.decrease').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const cartItem = event.target.closest('.cart-item');
+                const quantityInput = cartItem.querySelector('.quantity');
+                if (parseInt(quantityInput.value) > 1) {
+                    quantityInput.value = parseInt(quantityInput.value) - 1;
+                }
+                updateTotal();
+            });
+        });
+
+        document.querySelectorAll('.item-remove').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const cartItem = event.target.closest('.cart-item');
+                cartItem.remove();
+                updateTotal();
+            });
+        });
+
+        function updateTotal() {
+            let total = 0;
+            document.querySelectorAll('.cart-item').forEach(item => {
+                const price = parseFloat(item.dataset.price);
+                const quantity = parseInt(item.querySelector('.quantity').value);
+                total += price * quantity;
+            });
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+    </script>
+</body>
+</html>
